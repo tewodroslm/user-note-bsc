@@ -20,7 +20,7 @@ import java.util.HashSet;
 @Setter
 @Entity
 @Table(name="user")
-public class Users implements UserDetails {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,32 +30,14 @@ public class Users implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "username")
+    @Column(unique = true)
     private String username;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<GrantedAuthority>();
+    public Users(Users users) {
+        this.username = users.getUsername();
+        this.userId = users.getUserId();
+        this.password = users.getPassword();
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 }
