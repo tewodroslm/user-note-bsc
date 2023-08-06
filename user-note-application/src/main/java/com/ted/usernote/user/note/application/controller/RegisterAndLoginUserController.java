@@ -35,7 +35,6 @@ public class RegisterAndLoginUserController {
     public ResponseEntity<?> registerUser(@RequestBody @Validated SignUpDto signUpDto) throws Exception {
         log.info("AuthenticationController: registerUser: Entered!");
         log.info("Request Body: ", signUpDto);
-        System.out.println("Body val ====> " + signUpDto);
         SignUpDto signUpDto1 = SignUpDto.builder()
                 .username(signUpDto.getUsername())
                 .password(signUpDto.getPassword())
