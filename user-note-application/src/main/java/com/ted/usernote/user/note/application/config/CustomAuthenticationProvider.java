@@ -29,7 +29,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails customUserDetails = null;
         try{
-            customUserDetails = customUserDetailsService.loadUserByEmail(username);
+            customUserDetails = customUserDetailsService.loadUserByUsername(username);
         }catch (UsernameNotFoundException e){
             throw new BadCredentialsException("Invalid user detail");
         }
@@ -40,6 +40,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private Authentication customSuccessfullAuth(Authentication authentication, UserDetails customUserDetails) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(customUserDetails.getUsername(), authentication.getCredentials(), customUserDetails.getAuthorities());
         token.setDetails(authentication.getDetails());
+        System.out.println("++++==================== username password auth ");
+        System.out.println(token);
+        System.out.println("==========\n");
         return token;
     }
 

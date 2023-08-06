@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableJpaRepositories(basePackageClasses = UsersRepository.class)
 @Configuration
-public class SecurityConfigUsingOldWays extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // handle it using ss userdetails service
     @Autowired
@@ -55,11 +56,24 @@ public class SecurityConfigUsingOldWays extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.headers().frameOptions().disable();
+
+
         http.cors().and()
                 .authorizeHttpRequests()
-                .antMatchers("/foo").authenticated()
+                .antMatchers( "/h2-console/**",
+                        "/signIn",
+                        "/register-user",
+                        "/testNote2").permitAll()
+                .antMatchers("/testNote").authenticated()
+                .antMatchers("/addnote", "/notes", "/note/**", "/favorites", "/recent", "/note/**", "/deleteNote/**").authenticated()
                 .and()
                 .httpBasic();
+
+        http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 }
 
